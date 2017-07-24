@@ -19,7 +19,7 @@ classdef PacketProcessor
         function com = command(packet, idOfCommand, values)
             packetSize = 64;
             numFloats = (packetSize / 4) - 1;
-            message = java.util.Arrays.copyOf(int8(zeros(packetSize)),packetSize);
+            message = java.util.Arrays.copyOf(int8(zeros(packetSize, 1)),packetSize);
             be = java.nio.ByteOrder.LITTLE_ENDIAN;
             java.nio.ByteBuffer.wrap(message).order(be).putInt(0, idOfCommand).array();
             
