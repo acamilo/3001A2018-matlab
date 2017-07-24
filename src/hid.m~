@@ -2,7 +2,7 @@ javaaddpath('../lib/hid4java-0.5.0.jar');
 
 import org.hid4java.*;
 import org.hid4java.event.*;
-import java.nio.ByteBuffer;
+import java.nio.ByteBuffer.* as ByteBuf;
 import java.nio.ByteOrder;
 import java.lang.*;
 
@@ -32,7 +32,7 @@ for i=1:(dev.length)
                 values((j * 3) + 1) = 0;
                 values((j * 3) + 2) = 3;
             end
-            returnValues = pp.command(37, values)   
+            returnValues = pp.command(37, values)
 %             timeit(returnValues)
         end
     end
