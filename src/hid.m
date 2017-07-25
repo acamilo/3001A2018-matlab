@@ -14,26 +14,27 @@ dev=hidDevices.toArray;
 for i=1:(dev.length)
     if dev(i).getProductId() == 7
         dev(i).open();
-        nucleo = dev(i);
-        
-        pp = PacketProcessor(nucleo);
-        
-        sum = 0;
-        min = 100000;
-        max = 0;
-        values = zeros(9);
-        sinWaveInc = 2000;
-        seconds = 0.01;
-        range = 400;
-        
-        for k=1:sinWaveInc
-            for j=1:4
-                values((j * 3) + 0) = (sin((k / sinWaveInc * pi *2) * range) -range);
-                values((j * 3) + 1) = 0;
-                values((j * 3) + 2) = 3;
-            end
-            returnValues = pp.command(37, values)   
-%             timeit(returnValues)
+%         nucleo = dev(i);
+        if dev(i).isOpen()
+            pp = PacketProcessor(dev(i));
+
+            sum = 0;
+            min = 100000;
+            max = 0;
+            values = zeros(15, 1, 'single');
+            sinWaveInc = 2000;
+            seconds = 0.01;
+            range = 400;
+
+    %         for k=1:size(sinWaveInc)
+    %             for j=1:4
+    %                 values((j * 3) + 0) = (sin((k / sinWaveInc * pi *2) * range) -range);
+    %                 values((j * 3) + 1) = 0;
+    %                 values((j * 3) + 2) = 3;
+    %             end
+                returnValues = pp.command(37, values)   
+    %             timeit(returnValues)
+    %         end
         end
     end
 end
@@ -41,4 +42,4 @@ end
 dev(i).close()
 hidServices.shutdown();
  
-clear java;
+% clear java;

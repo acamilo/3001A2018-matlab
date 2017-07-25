@@ -5,12 +5,13 @@ classdef PacketProcessor
     methods
         function packet = PacketProcessor(device)
             javaaddpath('../lib/hid4java-0.5.0.jar');
-
+            
             import org.hid4java.*;
             import org.hid4java.event.*;
             import java.nio.ByteBuffer;
             import java.nio.ByteOrder;
             import java.lang.*;
+            import org.apache.commons.lang.ArrayUtils.*;
             
             if nargin > 0
                 packet.hidDevice = device;
@@ -19,34 +20,47 @@ classdef PacketProcessor
         function com = command(packet, idOfCommand, values)
             packetSize = 64;
             numFloats = (packetSize / 4) - 1;
-            message = java.util.Arrays.copyOf(int8(zeros(packetSize, 1)),packetSize);
-            be = java.nio.ByteOrder.LITTLE_ENDIAN;
-            java.nio.ByteBuffer.wrap(message).order(be).putInt(0, idOfCommand).array();
-            
-            loopI = 0;
-            
-            while loopI < numFloats && loopI < size(values)
-                baseIndex = (4 * loopI) + 4;
-                ByteBuffer.wrap(message).order(be).putFloat(baseIndex, values(loopI)).array();
-                loopI = loopI + 1;
+
+            objMessage = javaArray('java.lang.Byte', packetSize);
+            tempArray = packet.single2bytes(idOfCommand, values);
+                        
+            for i=1:size(tempArray)
+                objMessage(i) = java.lang.Byte(tempArray(i));
             end
             
-            returnValues = zeros(numFloats);
+            message = javaMethod('toPrimitive', 'org.apache.commons.lang.ArrayUtils', objMessage);
+            
+            returnValues = zeros(numFloats, 1);
             val = packet.hidDevice.write(message, packetSize, 0);
-            if val > 0
-                read = packet.hidDevice.read(message, 1000);
-                if read > 0
-                    for i=1:len(numFloats)
-                        baseIndex = (4 * i) + 4;
-                        returnValues(i) = java.nio.ByteBuffer.wrap(message).order(be).getFloat(baseIndex);
-                    end
-                else
-                    disp("Read failed")
-                end
-            else
-                disp("Writing failed")
-            end
+%             if val > 0
+%                 read = packet.hidDevice.read(message, 1000);
+%                 if read > 0
+%                     for i=1:len(numFloats)
+%                         baseIndex = (4 * i) + 4;
+%                         returnValues(i) = java.nio.ByteBuffer.wrap(message).order(be).getFloat(baseIndex);
+%                     end
+%                 else
+%                     disp("Read failed")
+%                 end
+%             else
+%                 disp("Writing failed")
+%             end
             com = returnValues;
+        end
+        function thing = single2bytes(packet, code, val)
+            newArray = zeros(length(val)+1, 1, 'single');
+            for i=1:size(newArray)
+                if i == 1
+                    newArray(i) = single(code);
+                else
+                    newArray(i) = val(i-1);
+                end
+            end
+            
+            disp(newArray)
+            
+            returnArray = typecast(newArray, 'uint8');
+            thing = returnArray;
         end
     end
 end
