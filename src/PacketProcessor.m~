@@ -15,9 +15,9 @@ classdef PacketProcessor
             import org.apache.commons.lang.ArrayUtils.*;
             
             if nargin > 0
-                packet.hidService = HidManager.getHidServices();
-                packet.hidService.start();
-                hidDevices = packet.hidService.getAttachedHidDevices();
+                hidServices = HidManager.getHidServices();
+                hidServices.start();
+                hidDevices = hidServices.getAttachedHidDevices();
                 dev=hidDevices.toArray;
                 
                 for k=1:(dev.length)
@@ -60,7 +60,7 @@ classdef PacketProcessor
             end
             
             packet.hidDevice.close()
-            packet.hidService.shutdown();
+            hidServices.shutdown();
             com = returnValues;
         end
         function thing = single2bytes(packet, code, val)
