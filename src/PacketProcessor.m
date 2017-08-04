@@ -53,7 +53,11 @@ classdef PacketProcessor
                     disp(length(ret))
                     disp(length(returnValues))
                     disp(ret)
-                    sm = reshape(ret,[16,4])
+                    reshapable = zeros(64,1,'uint8');
+                    for i=1:64
+                        reshapable(i)=ret(i)
+                    end
+                    sm = reshape(reshapable,[16,4])
                     if read > 0
                            for i=1:length(returnValues)
                                startIndex = (i*4);
