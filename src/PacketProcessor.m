@@ -55,10 +55,15 @@ classdef PacketProcessor
                     disp(ret)
                     reshapable = zeros(64,1,'uint8');
                     for i=1:64
-                        reshapable(i)=ret(i)
+                        if ret(i).byteValue()>=0
+                            reshapable(i)=ret(i).byteValue();
+                        else
+                            reshapable(i)=ret(i).byteValue()+256;
+                        end
                     end
-                    sm = reshape(reshapable,[16,4])
-                    if read > 0
+                    disp(reshapable);
+                    sm = reshape(reshapable,[4,16])
+                    if length(ret) > 0
                            for i=1:length(returnValues)
                                startIndex = (i*4);
                                endIndex = startIndex+4;
@@ -66,8 +71,9 @@ classdef PacketProcessor
                                disp(startIndex);
                                disp(' to ');
                                disp(endIndex);
-                               subMatrix = sm(i+1,:)
+                               subMatrix = sm(:,i+1);
                                returnValues(i)=typecast(subMatrix,'single');
+                               disp( returnValues(i));
                            end
                     else
                         disp("Read failed")
