@@ -43,6 +43,9 @@ classdef PacketProcessor
             returnValues = zeros(numFloats, 1);
             packet.hidDevice.open();
             if packet.hidDevice.isOpen()
+                disp('Writing');
+                disp(message);
+
                 val = packet.hidDevice.write(message, packetSize, 0);
                 if val > 0
                     read = packet.hidDevice.read(message, 1000);
@@ -57,6 +60,8 @@ classdef PacketProcessor
                 else
                     disp("Writing failed")
                 end
+            else
+                disp('Device closed!')
             end
             
             packet.hidDevice.close()
@@ -64,18 +69,21 @@ classdef PacketProcessor
             com = returnValues;
         end
         function thing = single2bytes(packet, code, val)
-            newArray = zeros(length(val)+1, 1, 'single');
-            for i=1:size(newArray)
-                if i == 1
-                    newArray(i) = single(code);
-                else
-                    newArray(i) = val(i-1);
+            returnArray=uint8(zeros((length(val)+1)*4));
+            tmp1 = typecast(int32(code), 'uint8');
+            for j=1:4
+                 returnArray(j)=tmp1(j);
+            end
+            disp('Code: ')
+
+            disp(code)
+            disp(tmp1)
+            for i=1:length(val)
+                tmp = typecast(single(val(i)), 'uint8');
+                for j=1:4
+                    returnArray((i*4)+j+4)=tmp(j);
                 end
             end
-            
-            disp(newArray)
-            
-            returnArray = typecast(newArray, 'uint8');
             thing = returnArray;
         end
     end
