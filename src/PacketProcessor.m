@@ -5,7 +5,7 @@ classdef PacketProcessor
     end
     methods
         function packet = PacketProcessor(deviceID)
-            javaaddpath('../lib/hid4java-0.5.0.jar');
+            javaaddpath('../lib/hid4java-0.5.1.jar');
             
             import org.hid4java.*;
             import org.hid4java.event.*;
@@ -48,12 +48,23 @@ classdef PacketProcessor
 
                 val = packet.hidDevice.write(message, packetSize, 0);
                 if val > 0
-                    read = packet.hidDevice.read(message, 1000);
+                    ret = packet.hidDevice.read(packetSize, 1000);
+                    disp('Read')                 
+                    disp(length(ret))
+                    disp(length(returnValues))
+                    disp(ret)
+                    sm = reshape(ret,[16,4])
                     if read > 0
-                        for i=1:len(numFloats)
-                            baseIndex = (4 * i) + 4;
-                            returnValues(i) = java.nio.ByteBuffer.wrap(message).order(be).getFloat(baseIndex);
-                        end
+                           for i=1:length(returnValues)
+                               startIndex = (i*4);
+                               endIndex = startIndex+4;
+                               disp('Single from ');
+                               disp(startIndex);
+                               disp(' to ');
+                               disp(endIndex);
+                               subMatrix = sm(i+1,:)
+                               returnValues(i)=typecast(subMatrix,'single');
+                           end
                     else
                         disp("Read failed")
                     end
