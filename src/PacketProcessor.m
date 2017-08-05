@@ -43,15 +43,15 @@ classdef PacketProcessor
             returnValues = zeros(numFloats, 1);
             packet.hidDevice.open();
             if packet.hidDevice.isOpen()
-                disp('Writing');
-                disp(message);
+                %disp('Writing');
+                %disp(message);
 
                 val = packet.hidDevice.write(message, packetSize, 0);
                 if val > 0
-                    ret = packet.hidDevice.read(packetSize, 1000);
-                    disp('Read')                 
-                    disp(length(ret))
-                    disp(length(returnValues))
+                    ret = packet.hidDevice.read(int32(packetSize), int32(1000));
+                    %disp('Read')                 
+                    %disp(length(ret))
+                    %disp(length(returnValues))
                     disp(ret)
                     reshapable = zeros(64,1,'uint8');
                     for i=1:64
@@ -67,13 +67,13 @@ classdef PacketProcessor
                            for i=1:length(returnValues)
                                startIndex = (i*4);
                                endIndex = startIndex+4;
-                               disp('Single from ');
-                               disp(startIndex);
-                               disp(' to ');
-                               disp(endIndex);
+                               %disp('Single from ');
+                               %disp(startIndex);
+                               %disp(' to ');
+                               %disp(endIndex);
                                subMatrix = sm(:,i+1);
                                returnValues(i)=typecast(subMatrix,'single');
-                               disp( returnValues(i));
+                               %disp( returnValues(i));
                            end
                     else
                         disp("Read failed")
@@ -95,10 +95,10 @@ classdef PacketProcessor
             for j=1:4
                  returnArray(j)=tmp1(j);
             end
-            disp('Code: ')
+            %disp('Code: ')
 
-            disp(code)
-            disp(tmp1)
+            %disp(code)
+            %disp(tmp1)
             for i=1:length(val)
                 tmp = typecast(single(val(i)), 'uint8');
                 for j=1:4
