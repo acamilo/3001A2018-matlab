@@ -117,7 +117,7 @@ classdef PacketProcessor
             for i=1:length(val)
                 tmp = typecast(single(val(i)), 'uint8');
                 for j=1:4
-                    returnArray((i*4)+j+4)=tmp(j);
+                    returnArray((i*4)+j)=tmp(j);
                 end
             end
             thing = returnArray;
