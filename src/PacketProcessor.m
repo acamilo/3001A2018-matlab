@@ -28,6 +28,8 @@ classdef PacketProcessor
                 for k=1:(dev.length)
                     if dev(k).getProductId() == deviceID
                         packet.hidDevice = dev(k);
+                        packet.hidDevice.open();
+
                     end
                 end
             end
@@ -46,7 +48,7 @@ classdef PacketProcessor
             message = javaMethod('toPrimitive', 'org.apache.commons.lang.ArrayUtils', objMessage);
             
             returnValues = zeros(numFloats, 1);
-            packet.hidDevice.open();
+           
             if packet.hidDevice.isOpen()
                 %disp('Writing');
                 %disp(message);
@@ -89,9 +91,6 @@ classdef PacketProcessor
             else
                 disp('Device closed!')
             end
-            
-            packet.hidDevice.close()
-            packet.hidService.shutdown();
             com = returnValues;
         end
         function thing = single2bytes(packet, code, val)
