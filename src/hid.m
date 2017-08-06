@@ -21,8 +21,9 @@ range = 400.0;
          values((j * 3) + 2) = 0;
          values((j * 3) + 3) = 3;
      end
-
+     tic
      returnValues = pp.command(37, values);
+     toc
      disp('sent');
      disp(values);
      disp('got');

@@ -37,29 +37,32 @@ classdef PacketProcessor
         function com = command(packet, idOfCommand, values)
             packetSize = 64;
             numFloats = (packetSize / 4) - 1;
-            
+            %tic
             objMessage = javaArray('java.lang.Byte', packetSize);
             tempArray = packet.single2bytes(idOfCommand, values);
             
             for i=1:size(tempArray)
                 objMessage(i) = java.lang.Byte(tempArray(i));
             end
-            
+            %toc
             message = javaMethod('toPrimitive', 'org.apache.commons.lang.ArrayUtils', objMessage);
-            
+            %toc
             returnValues = zeros(numFloats, 1);
-           
+            
             if packet.hidDevice.isOpen()
+                %toc
                 %disp('Writing');
                 %disp(message);
 
                 val = packet.hidDevice.write(message, packetSize, 0);
+                %toc
                 if val > 0
                     ret = packet.hidDevice.read(int32(packetSize), int32(1000));
+                    toc
                     %disp('Read')                 
                     %disp(length(ret))
                     %disp(length(returnValues))
-                    disp(ret)
+                    %disp(ret)
                     reshapable = zeros(64,1,'uint8');
                     for i=1:64
                         if ret(i).byteValue()>=0
@@ -68,12 +71,18 @@ classdef PacketProcessor
                             reshapable(i)=ret(i).byteValue()+256;
                         end
                     end
+%                     interArray = (ret).byteValue();
+%                     thresholded_array = (interArray<0)+256;
+%                     reshapable = random_array+thresholded_array;
+                    toc
                     disp(reshapable);
+                    
                     sm = reshape(reshapable,[4,16])
+                    %toc
                     if length(ret) > 0
                            for i=1:length(returnValues)
-                               startIndex = (i*4);
-                               endIndex = startIndex+4;
+                               %startIndex = (i*4);
+                               %endIndex = startIndex+4;
                                %disp('Single from ');
                                %disp(startIndex);
                                %disp(' to ');
@@ -82,9 +91,11 @@ classdef PacketProcessor
                                returnValues(i)=typecast(subMatrix,'single');
                                %disp( returnValues(i));
                            end
+                           
                     else
                         disp("Read failed")
                     end
+                    %toc
                 else
                     disp("Writing failed")
                 end
