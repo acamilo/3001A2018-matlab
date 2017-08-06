@@ -4,6 +4,11 @@ classdef PacketProcessor
         hidService;
     end
     methods
+        function  shutdown(packet)
+            packet.hidDevice.close();
+            packet.hidService.shutdown();
+
+        end
         function packet = PacketProcessor(deviceID)
             javaaddpath('../lib/hid4java-0.5.1.jar');
             
