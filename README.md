@@ -27,5 +27,6 @@ git push -u origin master
 Start in the directory with your checked out code.
 
 ```
-matlab
+cd src
+matlab hid.m
 ```
