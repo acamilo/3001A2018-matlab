@@ -28,5 +28,5 @@ Start in the directory with your checked out code.
 
 ```
 cd src
-matlab hid.m
+matlab
 ```
