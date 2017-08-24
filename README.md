@@ -22,6 +22,14 @@ git remote add RBE-UPSTREAM https://github.com/WPIRoboticsEngineering/RBE3001_Ma
 #this pushes the master baranch to your private repo
 git push -u origin master
 ```
+# Upstream updates
+If the course staff needs to update or repair any system code or the dependant libraries, then you will need to run:
+```
+git pull RBE-UPSTREAM master
+git submodule init
+git submodule update
+```
+
 ## Launch Matlab 
 
 Start in the directory with your checked out code.
