@@ -107,10 +107,10 @@ classdef PacketProcessor
                            end
                            
                     else
-                        disp("Read failed")
+                        disp('Read failed')
                     end
                 else
-                    disp("Writing failed")
+                    disp('Writing failed')
                 end
             else
                 disp('Device closed!')
