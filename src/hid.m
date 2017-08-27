@@ -5,12 +5,15 @@ import org.hid4java.event.*;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.lang.*;
-%
+%Load the xml file
 xDoc = xmlread('seaArm.xml');
+% list all the D-H parameter tags
 allListitems = xDoc.getElementsByTagName('DHParameters');
+%List all the apendages
 appendages = xDoc.getElementsByTagName('appendage').item(0);
+%Liad the transfrom of the base of the arm to home
 baseTransform = appendages.getElementsByTagName('baseToZframe').item(0);
-
+%Print allt he values
 printTag(baseTransform,'x');
 printTag(baseTransform,'y');
 printTag(baseTransform,'z');
@@ -18,7 +21,7 @@ printTag(baseTransform,'rotw');
 printTag(baseTransform,'rotx');
 printTag(baseTransform,'roty');
 printTag(baseTransform,'rotz');
-
+% Print D-H parameters
 for k = 0:allListitems.getLength-1
    thisListitem = allListitems.item(k);
    fprintf('Link %i\n',k);
