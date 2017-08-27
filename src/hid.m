@@ -32,7 +32,7 @@ range = 400.0;
      disp(values);
      disp('got');
      disp(returnValues);
-     %timeit(returnValues)
+     pause(0.1) %timeit(returnValues)
  end
 pp.shutdown()
 clear java;
