@@ -5,40 +5,14 @@ import org.hid4java.event.*;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.lang.*;
-%Load the xml file
-xDoc = xmlread('seaArm.xml');
-% list all the D-H parameter tags
-allListitems = xDoc.getElementsByTagName('DHParameters');
-%List all the apendages
-appendages = xDoc.getElementsByTagName('appendage').item(0);
-%Liad the transfrom of the base of the arm to home
-baseTransform = appendages.getElementsByTagName('baseToZframe').item(0);
-%Print allt he values
-printTag(baseTransform,'x');
-printTag(baseTransform,'y');
-printTag(baseTransform,'z');
-printTag(baseTransform,'rotw');
-printTag(baseTransform,'rotx');
-printTag(baseTransform,'roty');
-printTag(baseTransform,'rotz');
-% Print D-H parameters
-for k = 0:allListitems.getLength-1
-   thisListitem = allListitems.item(k);
-   fprintf('Link %i\n',k);
-   % Get the label element. In this file, each
-   % listitem contains only one label.
-   printTag(thisListitem,'Delta');
-   printTag(thisListitem,'Theta');
-   printTag(thisListitem,'Radius');
-   printTag(thisListitem,'Alpha');
-end
+
 
 pp = PacketProcessor(7);
 
 %Create an array of 32 bit floaing point zeros to load an pass to the
 %packet processor
 values = zeros(15, 1, 'single');
-sinWaveInc = 200.0;
+sinWaveInc = 10.0;
 range = 400.0;
 %Iterate through a sine wave for joint values
  for k=1:sinWaveInc
@@ -62,11 +36,42 @@ range = 400.0;
  end
 pp.shutdown()
 clear java;
+%Load the xml file
+xDoc = xmlread('seaArm.xml');
+% list all the D-H parameter tags
+allListitems = xDoc.getElementsByTagName('DHParameters');
+%List all the apendages
+appendages = xDoc.getElementsByTagName('appendage').item(0);
+%Liad the transfrom of the base of the arm to home
+baseTransform = appendages.getElementsByTagName('baseToZframe').item(0);
+%Print allt he values
+printTag(baseTransform,'x');
+printTag(baseTransform,'y');
+printTag(baseTransform,'z');
+printTag(baseTransform,'rotw');
+printTag(baseTransform,'rotx');
+printTag(baseTransform,'roty');
+printTag(baseTransform,'rotz');
+% Print D-H parameters
+for k = 0:allListitems.getLength-1
+   thisListitem = allListitems.item(k);
+   fprintf('\nLink %i\n',k);
+   % Get the label element. In this file, each
+   % listitem contains only one label.
+   printTag(thisListitem,'Delta');
+   printTag(thisListitem,'Theta');
+   printTag(thisListitem,'Radius');
+   printTag(thisListitem,'Alpha');
+end
 
-function printTag(thisListitem,name)
+function value = tagValue(thisListitem,name)
    % listitem contains only one label.
    thisList = thisListitem.getElementsByTagName(name);
    thisElement = thisList.item(0);
    data  = thisElement.getFirstChild.getData;
-   fprintf('%s %s\n',thisElement,data);
+   value = str2double(data);
+end
+function printTag(thisListitem,name)
+   data  = tagValue(thisListitem,name);
+   fprintf('%s \t%f\n',name,data);
 end
