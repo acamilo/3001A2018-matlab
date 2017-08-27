@@ -6,6 +6,29 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.lang.*;
 
+xDoc = xmlread('seaArm.xml');
+allListitems = xDoc.getElementsByTagName('DHParameters');
+appendages = xDoc.getElementsByTagName('appendage').item(0);
+baseTransform = appendages.getElementsByTagName('baseToZframe').item(0);
+
+printTag(baseTransform,'x');
+printTag(baseTransform,'y');
+printTag(baseTransform,'z');
+printTag(baseTransform,'rotw');
+printTag(baseTransform,'rotx');
+printTag(baseTransform,'roty');
+printTag(baseTransform,'rotz');
+
+for k = 0:allListitems.getLength-1
+   thisListitem = allListitems.item(k);
+   fprintf('Link %i\n',k);
+   % Get the label element. In this file, each
+   % listitem contains only one label.
+   printTag(thisListitem,'Delta');
+   printTag(thisListitem,'Theta');
+   printTag(thisListitem,'Radius');
+   printTag(thisListitem,'Alpha');
+end
 
 pp = PacketProcessor(7);
 
@@ -32,3 +55,11 @@ range = 400.0;
  end
 pp.shutdown()
 clear java;
+
+function printTag(thisListitem,name)
+   % listitem contains only one label.
+   thisList = thisListitem.getElementsByTagName(name);
+   thisElement = thisList.item(0);
+   data  = thisElement.getFirstChild.getData;
+   fprintf('%s %s\n',thisElement,data);
+end
