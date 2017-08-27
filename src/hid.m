@@ -38,13 +38,13 @@ pp.shutdown()
 clear java;
 %Load the xml file
 xDoc = xmlread('seaArm.xml');
-% list all the D-H parameter tags
+%all the D-H parameter tags
 allListitems = xDoc.getElementsByTagName('DHParameters');
 %List all the apendages
 appendages = xDoc.getElementsByTagName('appendage').item(0);
-%Liad the transfrom of the base of the arm to home
+%Load the transfrom of home to the base of the arm
 baseTransform = appendages.getElementsByTagName('baseToZframe').item(0);
-%Print allt he values
+%Print all the values
 printTag(baseTransform,'x');
 printTag(baseTransform,'y');
 printTag(baseTransform,'z');
@@ -63,7 +63,7 @@ for k = 0:allListitems.getLength-1
    printTag(thisListitem,'Radius');
    printTag(thisListitem,'Alpha');
 end
-
+% Get the value stored in a tag
 function value = tagValue(thisListitem,name)
    % listitem contains only one label.
    thisList = thisListitem.getElementsByTagName(name);
@@ -71,6 +71,7 @@ function value = tagValue(thisListitem,name)
    data  = thisElement.getFirstChild.getData;
    value = str2double(data);
 end
+%Print out the tag name with its value
 function printTag(thisListitem,name)
    data  = tagValue(thisListitem,name);
    fprintf('%s \t%f\n',name,data);
