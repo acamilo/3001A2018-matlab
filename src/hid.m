@@ -38,10 +38,18 @@ pp.shutdown()
 clear java;
 %Load the xml file
 xDoc = xmlread('seaArm.xml');
+%All Arms
+allAppendage =xDoc.getElementsByTagName('appendage');
+%All walking legs
+%allAppendage =xDoc.getElementsByTagName('leg');
+%All drivabel wheels
+%allAppendage =xDoc.getElementsByTagName('drivable');
+%All steerable wheels
+%allAppendage =xDoc.getElementsByTagName('steerable');
+%Grab the first appendage
+appendages = allAppendage.item(0);
 %all the D-H parameter tags
-allListitems = xDoc.getElementsByTagName('DHParameters');
-%List all the apendages
-appendages = xDoc.getElementsByTagName('appendage').item(0);
+allListitems = appendages.getElementsByTagName('DHParameters');
 %Load the transfrom of home to the base of the arm
 baseTransform = appendages.getElementsByTagName('baseToZframe').item(0);
 %Print all the values
