@@ -28,7 +28,7 @@ SERV_ID = 37;            % we will be talking to server ID 37 on
 DEBUG   = true;          % enables/disables debug prints
 
 % Instantiate a packet - the following instruction allocates 64
-% bytes for this purpose. Recall that the HDI interface supports
+% bytes for this purpose. Recall that the HID interface supports
 % packet sizes up to 64 bytes.
 packet = zeros(15, 1, 'single');
 
