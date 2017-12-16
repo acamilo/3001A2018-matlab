@@ -44,8 +44,8 @@ for k = 1:sinWaveInc
     
     for j = 0 : 4 % !FIXME this seems incorrect to me - should be 0:2
        
-        % Only for link 1
-        if j == 1 
+        % Only for joint 0
+        if j == 0
             packet((j * 3) + 1) = (sin(incremtal * pi *2.0 )*range)+(range);
         end
     end
