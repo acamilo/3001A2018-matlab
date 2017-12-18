@@ -22,7 +22,7 @@ range = 400.0;
          values((j * 3) + 1) = (sin(incremtal * pi *2.0 )*range)+(range);
          %Send junk data for velocity and force targets
          values((j * 3) + 2) = 0;
-         values((j * 3) + 3) = 3;
+         values((j * 3) + 3) = 0; % KEEP IT ZERO!
      end
      tic
      %Process command and print the returning values
@@ -34,6 +34,7 @@ range = 400.0;
      disp(returnValues);
      pause(0.1) %timeit(returnValues)
  end
+ 
 pp.shutdown()
 clear java;
 %Load the xml file

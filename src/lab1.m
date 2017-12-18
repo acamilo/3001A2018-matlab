@@ -35,20 +35,13 @@ packet = zeros(15, 1, 'single');
 % The following code generates a sinusoidal trajectory to be
 % executed on joint 1 of the arm and iteratively sends the list of
 % setpoints to the Nucleo firmware. 
-sinWaveInc = 10.0;
-range = 400.0;
+viaPts = [0, -400, 400, -400, 400, 0];
 
 % Iterate through a sine wave for joint values
-for k = 1:sinWaveInc
-    incremtal = (single(k) / sinWaveInc);
+for k = viaPts
+    %incremtal = (single(k) / sinWaveInc);
     
-    for j = 0 : 4 % !FIXME this seems incorrect to me - should be 0:2
-       
-        % Only for joint 0
-        if j == 0
-            packet((j * 3) + 1) = (sin(incremtal * pi *2.0 )*range)+(range);
-        end
-    end
+    packet(1) = k;
     
     tic % !FIXME interestingly, commenting out this tic and the
         % following toc statement below causes the program to
@@ -66,7 +59,7 @@ for k = 1:sinWaveInc
         disp(returnPacket);
     end
     
-    pause(0.1) %timeit(returnPacket) !FIXME why is this needed?
+    pause(1) %timeit(returnPacket) !FIXME why is this needed?
 end
 
 % Clear up memory upon termination
