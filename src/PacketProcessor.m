@@ -61,7 +61,7 @@ classdef PacketProcessor
             %Subtract the first 4 bytes as command id, remainder is data to
             %be transmitted
             numFloats = (packetSize / 4) - 1;
-            %tic
+            
             %Create the java datatype for the downstream arguments
             objMessage = javaArray('java.lang.Byte', packetSize);
             %Parse the downstream arguments
@@ -83,18 +83,18 @@ classdef PacketProcessor
                     %Read back a packet of data from the HID interface
                     ret = packet.hidDevice.read(int32(packetSize), int32(1000));
                     disp('Read from hardware');
-                    toc
+                    
                     disp('Convert to bytes');
                     %Use a Lambda to convert all Bytes to signed integers
                     %in Matlab datatypes
                     byteArray = arrayfun(@(x)  x.byteValue(), ret);
-                    toc
+                   
                     disp('Reshape');
                     %Reshape the threshholded array. The flat array of
                     %bytes is reshaped to 4x16 so each column contains all
                     %the bytes for a given value
                     sm = reshape(arrayfun(@(x)  mythreshhold(packet,x), byteArray),[4,16]);
-                    toc;
+                 
                     disp('parse');
                     if ~isempty(ret)
                            

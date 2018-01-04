@@ -43,11 +43,7 @@ for k = viaPts
     
     packet(1) = k;
     
-    tic % !FIXME interestingly, commenting out this tic and the
-        % following toc statement below causes the program to
-        % crash. There is a pending `toc' statement somewhere in
-        % the code - this should be fixed.
-     
+    
     % Send packet to the server and get the response
     returnPacket = pp.command(SERV_ID, packet);
     toc
