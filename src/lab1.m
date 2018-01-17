@@ -37,6 +37,8 @@ packet = zeros(15, 1, 'single');
 % setpoints to the Nucleo firmware. 
 viaPts = [0, -400, 400, -400, 400, 0];
 
+tic
+
 % Iterate through a sine wave for joint values
 for k = viaPts
     %incremtal = (single(k) / sinWaveInc);
@@ -61,3 +63,5 @@ end
 % Clear up memory upon termination
 pp.shutdown()
 clear java;
+
+toc
