@@ -82,32 +82,33 @@ classdef PacketProcessor
                 if val > 0
                     %Read back a packet of data from the HID interface
                     ret = packet.hidDevice.read(int32(packetSize), int32(1000));
-                    disp('Read from hardware');
+		    if ~isempty(ret)
+			    disp('Read from hardware');
+
+			    disp('Convert to bytes');
+			    %Use a Lambda to convert all Bytes to signed integers
+			    %in Matlab datatypes
+			    byteArray = arrayfun(@(x)  x.byteValue(), ret);
+
+			    disp('Reshape');
+			    %Reshape the threshholded array. The flat array of
+			    %bytes is reshaped to 4x16 so each column contains all
+			    %the bytes for a given value
+			    sm = reshape(arrayfun(@(x)  mythreshhold(packet,x), byteArray),[4,16]);
+
+			    disp('parse');
                     
-                    disp('Convert to bytes');
-                    %Use a Lambda to convert all Bytes to signed integers
-                    %in Matlab datatypes
-                    byteArray = arrayfun(@(x)  x.byteValue(), ret);
-                   
-                    disp('Reshape');
-                    %Reshape the threshholded array. The flat array of
-                    %bytes is reshaped to 4x16 so each column contains all
-                    %the bytes for a given value
-                    sm = reshape(arrayfun(@(x)  mythreshhold(packet,x), byteArray),[4,16]);
-                 
-                    disp('parse');
-                    if ~isempty(ret)
                            
-                           for i=1:length(returnValues)
+                             for i=1:length(returnValues)
                                % Strip a column to process 
                                subMatrix = sm(:,i+1);
                                % Use teh typecast to convert 4 bytes to the
                                % 32bit datatype
                                returnValues(i)=typecast(subMatrix,'single');
-                           end
+                             end
                            
                     else
-                        disp('Read failed')
+                        disp('Read failed, no data returned')
                     end
                 else
                     disp('Writing failed')
