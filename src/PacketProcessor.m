@@ -12,15 +12,8 @@ classdef PacketProcessor
             packet.myHIDSimplePacketComs.disconnect();
         end
         % Create a packet processor for an HID device with USB PID 0x007
-        function packet = PacketProcessor(vid,deviceID)
-
-            javaclasspath
-            import edu.wpi.SimplePacketComs.phy.HIDfactory;
-            packet.myHIDSimplePacketComs=HIDfactory.get();
-            packet.myHIDSimplePacketComs.setPid(deviceID);
-            packet.myHIDSimplePacketComs.setVid(vid);
-            packet.myHIDSimplePacketComs.connet();
-            
+        function packet = PacketProcessor(dev)
+             packet.myHIDSimplePacketComs=dev;    
         end
         %Perform a command cycle. This function will take in a command ID
         %and a list of 32 bit floating point numbers and pass them over the

@@ -10,15 +10,26 @@
 % 
 % IMPORTANT - understanding the code below requires being familiar
 % with the Nucleo firmware. Read that code first.
-clear java;
+%clear java;
 %clear import;
-clear classes;
-javaaddpath(fullfile(pwd,'../lib/SimplePacketComsJavaFat-0.4.1.jar'));
-import edu.wpi.SimplePacketComs.phy.HIDfactory;
+%clear classes;
 vid = hex2dec('3742');
 pid = hex2dec('0008');
+disp (vid );
+disp (pid);
+javaaddpath ../lib/SimplePacketComsJavaFat-0.4.1.jar;
+import edu.wpi.SimplePacketComs.*;
+import edu.wpi.SimplePacketComs.device.*;
+import edu.wpi.SimplePacketComs.phy.*;
+import java.util.*;
+import org.hid4java.*;
+version -java
+myHIDSimplePacketComs=edu.wpi.SimplePacketComs.phy.HIDfactory.get();
+myHIDSimplePacketComs.setPid(pid);
+myHIDSimplePacketComs.setVid(vid);
+myHIDSimplePacketComs.connet();
 % Create a PacketProcessor object to send data to the nucleo firmware
-pp = PacketProcessor(vid,pid); 
+pp = PacketProcessor(myHIDSimplePacketComs); 
 try
   SERV_ID = 37;            % we will be talking to server ID 37 on
                            % the Nucleo
