@@ -17,17 +17,17 @@ vid = hex2dec('3742');
 pid = hex2dec('0008');
 disp (vid );
 disp (pid);
-javaaddpath ../lib/SimplePacketComsJavaFat-0.4.1.jar;
+javaaddpath ../lib/SimplePacketComsJavaFat-0.5.0.jar;
 import edu.wpi.SimplePacketComs.*;
 import edu.wpi.SimplePacketComs.device.*;
 import edu.wpi.SimplePacketComs.phy.*;
 import java.util.*;
 import org.hid4java.*;
-version -java
-myHIDSimplePacketComs=edu.wpi.SimplePacketComs.phy.HIDfactory.get();
+version -java;
+myHIDSimplePacketComs=HIDfactory.get();
 myHIDSimplePacketComs.setPid(pid);
 myHIDSimplePacketComs.setVid(vid);
-myHIDSimplePacketComs.connet();
+myHIDSimplePacketComs.connect();
 % Create a PacketProcessor object to send data to the nucleo firmware
 pp = PacketProcessor(myHIDSimplePacketComs); 
 try
@@ -68,7 +68,8 @@ try
 
       pause(1) %timeit(returnPacket) !FIXME why is this needed?
   end
-catch
+catch exception
+    getReport(exception)
     disp('Exited on error, clean shutdown');
 end
 % Clear up memory upon termination
