@@ -11,17 +11,12 @@
 % IMPORTANT - understanding the code below requires being familiar
 % with the Nucleo firmware. Read that code first.
 
-javaaddpath('../lib/hid4java-0.5.1.jar');
-
-import org.hid4java.*;
-import org.hid4java.event.*;
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-import java.lang.*;
-
-
+javaaddpath('../lib/SimplePacketComsFat.jar');
+import edu.wpi.SimplePacketComs.phy.*;
+vid = hex2dec(3742);
+pid = hex2dec(0007);
 % Create a PacketProcessor object to send data to the nucleo firmware
-pp = PacketProcessor(7); % !FIXME why is the deviceID == 7?
+pp = PacketProcessor(vid,pid); % !FIXME why is the deviceID == 7?
 try
   SERV_ID = 37;            % we will be talking to server ID 37 on
                            % the Nucleo
