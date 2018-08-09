@@ -20,9 +20,13 @@ classdef PacketProcessor
         %HID interface to the device, it will take the response and parse
         %them back into a list of 32 bit floating point numbers as well
         function com = command(packet, idOfCommand, values)
+            ds = javaArray('java.lang.Double',length(values));
+            for i=1:length(values)
+               ds(i)= values(i);
+            end
             % Default packet size for HID
-            packet.writeFloats(idOfCommand,  values);
-            com = 	packet.readFloats(idOfCommand) ;
+            packet.writeFloats(idOfCommand,  ds);
+            com = 	packet.readFloats(Integer(idOfCommand)) ;
         end
     end
 end
