@@ -13,11 +13,12 @@ classdef PacketProcessor
         end
         % Create a packet processor for an HID device with USB PID 0x007
         function packet = PacketProcessor(vid,deviceID)
-            % Load the dependant Jar file
-            javaaddpath('../lib/SimplePacketComsFat.jar');
-            % Import Java classes 
-            import edu.wpi.SimplePacketComs.phy.*;
-            packet.myHIDSimplePacketComs=javaObject('HIDSimplePacketComs',vid,deviceID);
+
+            javaclasspath
+            import edu.wpi.SimplePacketComs.phy.HIDfactory;
+            packet.myHIDSimplePacketComs=HIDfactory.get();
+            packet.myHIDSimplePacketComs.setPid(deviceID);
+            packet.myHIDSimplePacketComs.setVid(vid);
             packet.myHIDSimplePacketComs.connet();
             
         end

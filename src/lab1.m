@@ -10,13 +10,15 @@
 % 
 % IMPORTANT - understanding the code below requires being familiar
 % with the Nucleo firmware. Read that code first.
-
-javaaddpath('../lib/SimplePacketComsFat.jar');
-import edu.wpi.SimplePacketComs.phy.*;
-vid = hex2dec(3742);
-pid = hex2dec(0007);
+clear java;
+%clear import;
+clear classes;
+javaaddpath(fullfile(pwd,'../lib/SimplePacketComsJavaFat-0.4.1.jar'));
+import edu.wpi.SimplePacketComs.phy.HIDfactory;
+vid = hex2dec('3742');
+pid = hex2dec('0008');
 % Create a PacketProcessor object to send data to the nucleo firmware
-pp = PacketProcessor(vid,pid); % !FIXME why is the deviceID == 7?
+pp = PacketProcessor(vid,pid); 
 try
   SERV_ID = 37;            % we will be talking to server ID 37 on
                            % the Nucleo
@@ -60,6 +62,6 @@ catch
 end
 % Clear up memory upon termination
 pp.shutdown()
-clear java;
+
 
 toc
