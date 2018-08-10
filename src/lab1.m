@@ -10,14 +10,14 @@
 % 
 % IMPORTANT - understanding the code below requires being familiar
 % with the Nucleo firmware. Read that code first.
-%clear java;
+clear java;
 %clear import;
-%clear classes;
+clear classes;
 vid = hex2dec('3742');
 pid = hex2dec('0008');
 disp (vid );
 disp (pid);
-javaaddpath ../lib/SimplePacketComsJavaFat-0.5.0.jar;
+javaaddpath ../lib/SimplePacketComsJavaFat-0.5.1.jar;
 import edu.wpi.SimplePacketComs.*;
 import edu.wpi.SimplePacketComs.device.*;
 import edu.wpi.SimplePacketComs.phy.*;
