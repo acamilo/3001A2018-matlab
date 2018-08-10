@@ -17,7 +17,7 @@ vid = hex2dec('3742');
 pid = hex2dec('0008');
 disp (vid );
 disp (pid);
-javaaddpath ../lib/SimplePacketComsJavaFat-0.5.1.jar;
+javaaddpath ../lib/SimplePacketComsJavaFat-0.5.2.jar;
 import edu.wpi.SimplePacketComs.*;
 import edu.wpi.SimplePacketComs.device.*;
 import edu.wpi.SimplePacketComs.phy.*;
@@ -46,10 +46,11 @@ try
   % setpoints to the Nucleo firmware. 
   viaPts = [0, -400, 400, -400, 400, 0];
 
-  tic
+  
 
   % Iterate through a sine wave for joint values
   for k = viaPts
+      tic
       %incremtal = (single(k) / sinWaveInc);
 
       packet(1) = k;
@@ -57,7 +58,7 @@ try
 
       % Send packet to the server and get the response
       returnPacket = pp.command(SERV_ID, packet);
-      toc
+      
 
       if DEBUG
           disp('Sent Packet:');
@@ -65,8 +66,9 @@ try
           disp('Received Packet:');
           disp(returnPacket);
       end
-
+      toc
       pause(1) %timeit(returnPacket) !FIXME why is this needed?
+      
   end
 catch exception
     getReport(exception)
